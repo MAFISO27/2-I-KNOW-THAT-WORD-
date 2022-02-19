@@ -8,7 +8,7 @@ import java.util.Objects;
 
 /**
  * @author Miguel Angel Figueroa Solarte miguel.figueroa@correounivalle.edu.co
- * @version @version v.1.2.0 date: 12/02/2022
+ * @version @version v.1.5.0 date: 18/02/2022
  */
 
 public class GUI extends JFrame {
@@ -16,21 +16,24 @@ public class GUI extends JFrame {
     private Header headerProject;
     private controladordeclase model;
     private Escucha escucha;
-    private static final String INFO2 =" Puede salir cuando desee.\n"
+    //Información en el botón de ayuda, en el panel del juego.
+    private static final String Info1 =" Puede salir cuando desee.\n"
             +  "si la partida no ha terminado la próxima vez que ingreses se iniciará la misma. ";
     private JPanel panelInicio, panelGame, panelBotones, panelPalabras, panelOpciones;
     private JTextField entradaUsuario;
     private JTextArea intro;
-    private JButton botonAceptar, botonAyuda, botonSalir, botonIniciar, botonInstrucciones, botonSi, botonNo, botonContinuar;
+    private JButton botonAceptar, botonAyuda, botonSalir,botonInstrucciones, botonSi, botonIniciar,  botonNo, botonContinuar;
     private JLabel labelUsername, labelNivel,labelInstrucciones,  labelTiempo, labelPalabra;
     private ImageIcon image;
     private String nombreJugador;
     private Timer timer;
-    private GridBagConstraints constraints, layoutGame;
+    private GridBagConstraints constraints, layoutGame;//componente del layout del JFrame
 
-
+    /**
+     * Constructor of GUI class
+     */
     public GUI() {
-        this.setContentPane(new Canvas(1));
+        this.setContentPane(new Design(1));// Pinta la imagen del fondo del Frame
         initGUI();
         this.setUndecorated(true);
         this.pack();
@@ -39,21 +42,29 @@ public class GUI extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * This method is used to set up the default JComponent Configuration,
+     * create Listener and control Objects used for the GUI class
+     */
     private void initGUI() {
 
+        //Set up JFrame Container's Layout
         this.setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
 
+        //Create Listener Object or Control Object
         escucha = new Escucha();
         model = new controladordeclase();
 
-        headerProject = new Header("I KNOW THAT WORD", new Color(9, 75, 78));
+        //Encabezado del frame
+        headerProject = new Header("juego:I KNOW THAT WORD", new Color(9, 75, 78));
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 2;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         this.add(headerProject, constraints);
 
+        //Creación de botones
         botonAyuda = new JButton();
         botonAyuda.addActionListener(escucha);
         botonAyuda.setPreferredSize(new Dimension(100, 80));
@@ -82,6 +93,7 @@ public class GUI extends JFrame {
         constraints.anchor = GridBagConstraints.LINE_END;
         this.add(botonSalir, constraints);
 
+        //panel que contiene el label del usuario, la entrada de texto y el botón de confirmación
         panelInicio = new JPanel(new GridBagLayout()); // Set up JPanel Container's Layout
         panelInicio.setPreferredSize(new Dimension(999, 666));
         panelInicio.setOpaque(false);
@@ -96,30 +108,40 @@ public class GUI extends JFrame {
         repaint();
     }
 
+    /**
+     * Este método crea los siguientes componentes y los agrega al panel de inicio:
+     * labelUsername: Etiqueta para indicar lo que se desea que ingrese el usuario en la caja de texto
+     * entradaUsuario: Componente para la entrada del texto
+     * botonOk: Botón de confirmación luego de ingresar el nombre de usuario
+     */
+
+
     public void componentesDelPanelInicio() {
 
-        GridBagConstraints layoutInicio = new GridBagConstraints();
+        GridBagConstraints layoutStar = new GridBagConstraints();//Componente del layout
 
         labelUsername = new JLabel();
         image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/usuario.png")));
         labelUsername.setIcon(new ImageIcon(image.getImage().getScaledInstance(350, 120, Image.SCALE_SMOOTH)));
-        layoutInicio.gridx = 0;
-        layoutInicio.gridy = 0;
-        layoutInicio.gridwidth = 2;
-        layoutInicio.fill = GridBagConstraints.NONE;
-        layoutInicio.anchor = GridBagConstraints.CENTER;
-        panelInicio.add(labelUsername, layoutInicio);
+        layoutStar.gridx = 0;
+        layoutStar.gridy = 0;
+        layoutStar.gridwidth = 2;
+        layoutStar.fill = GridBagConstraints.NONE;
+        layoutStar.anchor = GridBagConstraints.CENTER;
+        panelInicio.add(labelUsername, layoutStar);
 
+        //Cajón de entrada del texto
         entradaUsuario = new JTextField();
         entradaUsuario.setPreferredSize(new Dimension(260, 45));
         entradaUsuario.setFont(new Font("Arial ", Font.PLAIN, 32));
-        layoutInicio.gridx = 0;
-        layoutInicio.gridy = 1;
-        layoutInicio.gridwidth = 1;
-        layoutInicio.fill = GridBagConstraints.NONE;
-        layoutInicio.anchor = GridBagConstraints.LINE_END;
-        panelInicio.add(entradaUsuario, layoutInicio);
+        layoutStar.gridx = 0;
+        layoutStar.gridy = 1;
+        layoutStar.gridwidth = 1;
+        layoutStar.fill = GridBagConstraints.NONE;
+        layoutStar.anchor = GridBagConstraints.LINE_END;
+        panelInicio.add(entradaUsuario, layoutStar);
 
+        //Boton de confirmación
         botonAceptar = new JButton();
         botonAceptar.addActionListener(escucha);
         botonAceptar.setPreferredSize(new Dimension(59, 59));
@@ -127,28 +149,39 @@ public class GUI extends JFrame {
         botonAceptar.setIcon(new ImageIcon(image.getImage().getScaledInstance(59, 59, Image.SCALE_SMOOTH)));
         botonAceptar.setBorderPainted(false);
         botonAceptar.setContentAreaFilled(false);
-        layoutInicio.gridx = 1;
-        layoutInicio.gridy = 1;
-        layoutInicio.gridwidth = 1;
-        layoutInicio.fill = GridBagConstraints.NONE;
-        layoutInicio.anchor = GridBagConstraints.LINE_START;
-        panelInicio.add(botonAceptar, layoutInicio);
+        layoutStar.gridx = 1;
+        layoutStar.gridy = 1;
+        layoutStar.gridwidth = 1;
+        layoutStar.fill = GridBagConstraints.NONE;
+        layoutStar.anchor = GridBagConstraints.LINE_START;
+        panelInicio.add(botonAceptar, layoutStar);
         revalidate();
         repaint();
     }
 
 
-   public Icon iconoMessage(String reference, int width, int height) {
+    /**
+     * Este método retorna un objeto de tipo Icon y es el que crea el ícono del mensaje emergente del boton de ayuda
+     * @param reference es la ubicacion de la imagen
+     * @param width  medida del ancho que se desea que tenga el icono
+     * @param height  medida del alto  que se desea que tenga el icono
+     * */
+   public Icon Mensaje(String reference, int width, int height) {
         image = new ImageIcon(Objects.requireNonNull(getClass().getResource(reference)));
         image = new ImageIcon(image.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
         return image;
     }
 
 
-    public void crearPanelGame() {
-        panelGame = new Canvas(2);
-        panelGame.setLayout(new GridBagLayout());
-        layoutGame = new GridBagConstraints();
+
+    /**
+     * Este método crea el panel de inicio del juego luego de la confirmación de usuario
+     *
+     */
+    public void crearInicioJuego() {
+        panelGame = new Design(2);//Crea el panel con la imagen
+        panelGame.setLayout(new GridBagLayout());//Set up JPanel Container's Layout
+        layoutGame = new GridBagConstraints();//Componente del layout del panelGame
         panelGame.setPreferredSize(new Dimension(769, 407));
         constraints.gridx = 0;
         constraints.gridy = 2;
@@ -158,8 +191,8 @@ public class GUI extends JFrame {
         this.add(panelGame, constraints);
 
 
-        intro = new JTextArea("   ¡HOLA " + nombreJugador + "!\n" +
-                "   Estas en el nivel " + model.getNivelActual() + "\n   Presiona PLAY para iniciar");
+        intro = new JTextArea("   ¡¡Que Tal " + nombreJugador + "!!\n" +
+                "  Usted Esta en el nivel " + model.getNivelActual() + "\n   Presiona JUGAR para iniciar el juego");
         intro.setEditable(false);
         intro.setLineWrap(true);
         intro.setWrapStyleWord(true);
@@ -173,13 +206,24 @@ public class GUI extends JFrame {
         layoutGame.fill = GridBagConstraints.NONE;
         layoutGame.anchor = GridBagConstraints.CENTER;
         panelGame.add(intro, layoutGame);
-        crearPanelBotonesInicio();
+
+        crearPanelBotones();
+
         revalidate();
         repaint();
+
+
     }
 
+    /**
+     * Este método crea el panel en que se ubican los botones del juego.
+     * Además, crea los componentes:
+     * Botón de Instrucciones
+     * Botón de Iniciar Partida
+     */
 
-    public void crearPanelBotonesInicio() {
+
+    public void crearPanelBotones() {
 
         panelBotones = new JPanel();
         panelBotones.setPreferredSize(new Dimension(977, 150));
@@ -243,7 +287,7 @@ public class GUI extends JFrame {
         panelGame.add(panelPalabras, layoutGame);
 
         labelPalabra = new JLabel();
-        labelPalabra.setFont(new Font("Impact", Font.PLAIN, 52));
+        labelPalabra.setFont(new Font("Impact", Font.PLAIN, 60));
         layoutPanelPalabras.gridx = 0;
         layoutPanelPalabras.gridy = 0;
         layoutPanelPalabras.gridwidth = 1;
@@ -257,11 +301,10 @@ public class GUI extends JFrame {
 
 
     public void inicioFase2() {
-        intro.setText("\n               ¡Es hora de la verdad! \n   Demuestra cuánto has logrado\n   " +
+        intro.setText("\n               ¡Es tu momento! \n   Demuestra tu capacidad\n   " +
                 "memorizar ");
         intro.setBackground(new Color(250, 8, 45, 130));
         intro.setPreferredSize(new Dimension(400, 180));
-        // finFase.setFont(new Font("Impact",Font.PLAIN,28));
         intro.setForeground(Color.RED);
         layoutGame.gridx = 0;
         layoutGame.gridy = 0;
@@ -283,6 +326,7 @@ public class GUI extends JFrame {
         layoutGame.fill = GridBagConstraints.NONE;
         layoutGame.anchor = GridBagConstraints.LINE_END;
         panelGame.add(botonContinuar, layoutGame);
+
         revalidate();
         repaint();
 
@@ -347,12 +391,20 @@ public class GUI extends JFrame {
 
     }
 
+    /**
+     * Main process of the Java program
+     * @param args Object used in order to send input data from command line when
+     *             the program is executed by console.
+     */
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             GUI miProjectGUI = new GUI();
         });
     }
 
+    /**
+     * inner class that extends an Adapter Class or implements Listeners used by GUI class
+     */
     private class Escucha implements ActionListener {
         private int counter, fase;
 
@@ -392,13 +444,13 @@ public class GUI extends JFrame {
             }
             if (e.getSource() == botonSalir) System.exit(0);
             if (e.getSource() == botonAyuda)
-                JOptionPane.showMessageDialog(null, INFO2, null, JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, Info1, null, JOptionPane.INFORMATION_MESSAGE);
 
             if (e.getSource() == botonAceptar) {
                 nombreJugador = entradaUsuario.getText();
                 remove(panelInicio);
                 model.buscarJugador(nombreJugador);
-                crearPanelGame();
+                crearInicioJuego();
                 revalidate();
                 repaint();
 

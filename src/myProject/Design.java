@@ -7,13 +7,13 @@ import java.awt.*;
  * @author Miguel Angel Figueroa Solarte miguel.figueroa@correounivalle.edu.co
  * @version @version v.1.2.0 date: 12/02/2022
  */
-public class Canvas  extends JPanel {
+public class Design  extends JPanel {
 
     private int step;
     private ImageIcon imagenFrame,imagenPanel;
 
 
-    public Canvas(int option){
+    public Design(int option){
         step= option;
 
     }

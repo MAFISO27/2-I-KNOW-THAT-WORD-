@@ -32,3 +32,6 @@ bnbn=0
 h=0
 hg=0
 gf=0
+fg=0
+uj=0
+fghfg=0
