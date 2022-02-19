@@ -1,0 +1,5 @@
+s=0
+mafiso=0
+lol=0
+REY=0
+carlos=0

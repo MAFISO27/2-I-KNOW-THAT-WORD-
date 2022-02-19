@@ -1,99 +1,67 @@
 package myProject;
 
 import java.io.*;
-import java.nio.file.attribute.FileStoreAttributeView;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @author Miguel Angel Figueroa Solarte miguel.figueroa@correounivalle.edu.co
  * @version @version v.1.2.0 date: 12/02/2022
  */
-public class FileManager {
+
+public class FileManager
+{
     private FileReader fileReader;
-    private BufferedReader input;//para hacer lectura
+    private BufferedReader input;
     private FileWriter fileWriter;
-    private BufferedWriter output;//para escribir
+    private BufferedWriter output;
+    public static final String bancoDePalabras = "src/myProject/files/bancoDePalabras.txt";
+    public static final String usuariosListados = "src/myProject/files/usuariosListados.txt";
 
-    /**
-     * Este método lee el archivo 'bancoDePalabras.txt' y retorna el arrayList con cada palabra del archivo
-     * @return ArrayList lecturaWordFile
-     */
 
-    public ArrayList <String> lecturaWordFile() {
+    public ArrayList<String> leerArchivos(String _file)
+    {
 
-        ArrayList <String> arrayListPalabras = new ArrayList<String>();
+        ArrayList<String> texto = new ArrayList<>();
+
+        String elArchivoLeido = "";
+        if (Objects.equals(_file, "ListaPalabras")) {
+            elArchivoLeido = bancoDePalabras;
+        } else if (Objects.equals(_file, "ListaUsuarios")) {
+            elArchivoLeido = usuariosListados;
+        }
 
         try {
-            fileReader = new FileReader("src/myProject/files/bancoDePalabras.txt");
+            fileReader = new FileReader(elArchivoLeido);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
-            while(line!=null){
-                arrayListPalabras.add(line);
-                line=input.readLine();
+            while (line != null) {
+                texto.add(line);
+                line = input.readLine();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 input.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return arrayListPalabras;
+        return texto;
     }
 
-    /**
-     * Este método lee el archivo 'usuariosListados.txt' y retorna el arrayList con los datos de cada usuario del
-     * archivo
-     * @return ArrayList lecturaUserFile
-     */
 
-    public ArrayList <User> lecturaUserFile() {
-
-        ArrayList <User> usuariosRegistrados = new ArrayList<User>();
-
+    public void escribirTexto(String linea)
+    {
         try {
-            fileReader = new FileReader("src/myProject/files/usuariosListados.txt");
-            input = new BufferedReader(fileReader);
-            String name = input.readLine();
-            String nivel= input.readLine();
-            while(name!=null && nivel!=null){
-                int level= Integer.parseInt(nivel);
-                usuariosRegistrados.add(new User(name,level));
-                name=input.readLine();
-                nivel=input.readLine();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally{
-            try {
-                input.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return usuariosRegistrados;
-    }
-
-    /**
-     * Este método escribe en el archivo 'bancoDePalabras.txt' cada dato del usuario
-     * @return ArrayList lecturaWordFile
-     */
-
-    public void escribirTexto(String linea){
-        try {
-            fileWriter = new FileWriter("src/myProject/files/usuariosListados.txt",true);
+            fileWriter = new FileWriter(usuariosListados, true);
             output = new BufferedWriter(fileWriter);
             output.write(linea);
             output.newLine();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 output.close();
             } catch (IOException e) {
@@ -102,8 +70,25 @@ public class FileManager {
         }
     }
 
+    public void actualizarNivel(int posicion, int nivelNuevo)
+    {
+        try {
+            ArrayList<String> usuariosActualizados = leerArchivos("ListaUsuarios");
+            String usuarioAntiguo = usuariosActualizados.get(posicion);
+            String usuarioActualizado = usuarioAntiguo.substring(0, usuarioAntiguo.lastIndexOf("=") + 1) + nivelNuevo;
+            usuariosActualizados.remove(posicion);
+            usuariosActualizados.add(posicion, usuarioActualizado);
+            fileWriter = new FileWriter(usuariosListados, false);
+            output = new BufferedWriter(fileWriter);
+            for (String usuariosActualizado : usuariosActualizados) {
+                output.write(usuariosActualizado);
+                output.newLine();
 
-
-
-
+            }
+            output.close();
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }
