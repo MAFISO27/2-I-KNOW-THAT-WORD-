@@ -14,6 +14,13 @@ public class Jugador {
     private boolean existeUsuario;
 
 
+    /**
+     * constructor of User class
+     */
+
+    /**
+     * Este método registra los datos del usuario en el archivo .txt
+     */
     public Jugador (String playerName){
 
         fileManager = new FileManager();

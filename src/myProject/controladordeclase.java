@@ -25,6 +25,9 @@ public class controladordeclase {
     boolean nuevoUsuario;
 
 
+    /**
+     * Constructor of class
+     */
     public controladordeclase() {
 
     }

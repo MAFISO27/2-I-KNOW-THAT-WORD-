@@ -19,6 +19,11 @@ public class FileManager
     public static final String usuariosListados = "src/myProject/files/usuariosListados.txt";
 
 
+    /**
+     * Este método lee el archivo 'bancoDePalabras.txt' y retorna el arrayList con cada palabra del archivo
+     * @return ArrayList leerAchivos
+     */
+
     public ArrayList<String> leerArchivos(String _file)
     {
 
